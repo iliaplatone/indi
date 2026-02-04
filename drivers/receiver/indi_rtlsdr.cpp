@@ -54,7 +54,7 @@ void RTLSDR::Callback()
     n_read = 0;
     setBufferSize(getSampleRate() * IntegrationRequest * getBPS() / 16);
     setBufferSize(getBufferSize() + MAX_FRAME_SIZE - (getBufferSize() % MAX_FRAME_SIZE));
-    to_read = getBufferSize();
+    to_read = getBufferSize() * 2;
     buffer = (unsigned char *)realloc(buffer, min(MAX_FRAME_SIZE, getBufferSize() * 2));
     if((getSensorConnection() & CONNECTION_TCP) == 0)
         rtlsdr_reset_buffer(rtl_dev);
