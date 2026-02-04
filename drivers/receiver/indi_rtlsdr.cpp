@@ -55,7 +55,7 @@ void RTLSDR::Callback()
     setBufferSize(getSampleRate() * IntegrationRequest * getBPS() / 16);
     setBufferSize(getBufferSize() + MAX_FRAME_SIZE - (getBufferSize() % MAX_FRAME_SIZE));
     to_read = getBufferSize();
-    buffer = (unsigned char *)realloc(buffer, min(MAX_FRAME_SIZE, getBufferSize()));
+    buffer = (unsigned char *)realloc(buffer, min(MAX_FRAME_SIZE, getBufferSize() * 2));
     if((getSensorConnection() & CONNECTION_TCP) == 0)
         rtlsdr_reset_buffer(rtl_dev);
     else
@@ -80,8 +80,8 @@ void RTLSDR::Callback()
             }
         } else {
             for(int x = 0; x < getBufferSize() / 2; x++) {
-                real[x] = buffer[x*2];
-                imaginary[x] = buffer[x*2+1];
+                real[x] = buffer[x * 2];
+                imaginary[x] = buffer[x * 2 + 1];
             }
             setReal(real);
             setImaginary(imaginary);
